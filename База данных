@@ -1,0 +1,120 @@
+#include <iostream>
+#include <iomanip>
+#include <Windows.h>
+using namespace std;
+struct Student
+{
+    char name[255];
+    char surname[255];
+    int course;
+    int year;
+    int marks[6];
+};
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    int rez = 1;
+    int n;
+    Student* group = NULL;
+
+    while (rez != 0)
+    {
+        cout << "Меню: \n";
+        cout << "0. Выход\n";
+        cout << "1. Ввести данные\n";
+        cout << "2. Вывод таблицы студентов\n";
+        cout << "3. Вывод фамилий, оценок, курса студентов, имена которых начинаются с буквы 'А'\n";
+        cout << "4. Добавить нового студента\n";
+        cout << "5. Изменить данные\n";
+        cout << "6. Удалить данные\n";
+        cout << "7. Сортировка\n";
+        cout << "8. Загрузка базы данных из текстового файла\n";
+        cout << "9. Загрузка базы данных из бинарного файла\n";
+        cout << "10. Выгрузка базы данных в текстовый файл\n";
+        cout << "11. Перевод содержимого текстового файла в бинарный\n";
+        cout << "Выберите действие: ";
+        cin >> rez;
+
+        if (rez == 0) exit;
+
+        if (rez == 1)
+        {
+            cout << "Введите количество студентов: ";
+            cin >> n;
+            group = new Student[n];
+            for (int i = 0; i < n; i++)
+            {
+                cout << "Введите фамилию: ";
+                cin >> group[i].surname;
+                cout << "Введите имя: ";
+                cin >> group[i].name;
+                cout << "Введите курс: ";
+                cin >> group[i].course;
+                cout << "Введите год поступления: ";
+                cin >> group[i].year;
+                cout << "Введите шесть оценок:\n";
+                for (int j = 0; j < 6; j++)
+                {
+                    cout << "Введите " << j + 1 << " оценку:";
+                    cin >> group[i].marks[j];
+                }
+            }
+        }
+
+        if (rez == 2)
+        {
+            if (group)
+            {
+                cout << "+---+---------------------+---------------------+----+----+---------+---------+---------+---------+---------+---------+\n";
+                cout << "| № |       Фамилия       |         Имя         |Год |Курс|Предмет 1|Предмет 2|Предмет 3|Предмет 4|Предмет 5|Предмет 6|\n";
+                cout << "+---+---------------------+---------------------+----+----+---------+---------+---------+---------+---------+---------+\n";
+                for (int i = 0; i < n; i++)
+                {
+                    cout << left << "|" << setw(3) << (i + 1) << "|";
+                    cout << left << setw(21) << group[i].surname << "|";
+                    cout << left << setw(21) << group[i].name << "|";
+                    cout << left << setw(3) << group[i].year << "|";
+                    cout << left << setw(4) << group[i].course << "|";
+                    for (int j = 0; j < 6; j++)
+                    {
+                        cout << setw(9) << group[i].marks[j] << "|";
+                    }
+                    cout << "\n";
+                    cout << "+---+---------------------+---------------------+----+----+---------+---------+---------+---------+---------+---------+\n";
+                }
+            }
+            else cout << "Отсутствуют данные для вывода\n";
+        }
+
+        if (rez == 3)
+        {
+            if (group)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    if (group[i].name[0] == 'А')
+                    {
+                        cout << "Данные " << i + 1 << "-го студента\n";
+                        cout << "Фамилия: ";
+                        cout << group[i].surname << "\n";
+                        cout << "Курс: ";
+                        cout << group[i].course << "\n";
+                        cout << "Оценки:\n";
+                        for (int j = 0; j < 6; j++)
+                        {
+                            cout << group[i].marks[j] << " ";
+                        }
+                        cout << "\n";
+                    }
+                }
+            }
+            else cout << "Отсутствуют данные для вывода\n";
+        }
+    }
+
+    delete[] group;
+    system("pause");
+}
